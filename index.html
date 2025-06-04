@@ -7,29 +7,53 @@
   <style>
     body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; }
     h2 { text-align: center; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 8px; margin-top: 5px; }
-    .output { margin-top: 20px; font-weight: bold; font-size: 18px; color: green; }
-    .note { font-size: 12px; color: gray; margin-top: 20px; }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    label span {
+      flex: 1;
+    }
+
+    input, select {
+      width: 120px;
+      padding: 6px;
+      margin-left: 10px;
+    }
+
+    .output {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: green;
+    }
+
+    .note {
+      font-size: 12px;
+      color: gray;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <h2>复印纸加工自动计算</h2>
 
-  <label>吨价（元/吨）：<input type="number" id="tonPrice" value="4900"></label>
-  <label>实际克数（g）：<input type="number" id="weight" value="68"></label>
-  <label>实际张数：<input type="number" id="sheets" value="395"></label>
-
-  <label>包数：
+  <label><span>吨价（元/吨）：</span><input type="number" id="tonPrice" value="4900"></label>
+  <label><span>实际克数（g）：</span><input type="number" id="weight" value="68"></label>
+  <label><span>实际张数：</span><input type="number" id="sheets" value="395"></label>
+  <label><span>包数：</span>
     <select id="packs">
       <option value="5">5 包</option>
       <option value="8">8 包</option>
     </select>
   </label>
-
-  <label>内包成本（默认0.22）：<input type="number" id="innerCost" value="0.22" step="0.01"></label>
-  <label>箱盖（黄传韵0.4）：<input type="number" id="boxTop" value="0.65" step="0.01"></label>
-  <label>箱底（黄传韵0.8 红淮星0.95）：<input type="number" id="boxBottom" value="1.15" step="0.01"></label>
+  <label><span>内包成本（默认0.22）：</span><input type="number" id="innerCost" value="0.22" step="0.01"></label>
+  <label><span>箱盖（黄传韵0.4）：</span><input type="number" id="boxTop" value="0.65" step="0.01"></label>
+  <label><span>箱底（黄传韵0.8 红淮星0.95）：</span><input type="number" id="boxBottom" value="1.15" step="0.01"></label>
 
   <div class="output">成品单价（箱）含代工费：<span id="result">0.00</span> 元</div>
   <div class="output">成品单价（箱）含运费：<span id="resultWithFreight">0.00</span> 元</div>
