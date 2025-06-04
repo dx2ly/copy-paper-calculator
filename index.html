@@ -5,40 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>复印纸加工自动计算</title>
   <style>
-    body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    h2 {
-      text-align: center;
-    }
-    .form-row {
+    body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; }
+    h2 { text-align: center; }
+    label {
       display: flex;
+      margin-top: 10px;
       align-items: flex-start;
-      margin-top: 12px;
     }
-    .form-label {
+    label > span {
+      display: inline-block;
       width: 50%;
       text-align: right;
       padding-right: 10px;
       box-sizing: border-box;
-      padding-top: 6px;
+      line-height: 1.2;
+      user-select: none;
     }
-    .form-input {
+    label > div {
       width: 50%;
-    }
-    .form-input input,
-    .form-input select {
-      width: 100%;
-      padding: 6px;
       box-sizing: border-box;
     }
-    .subnote {
+    input, select {
+      width: 100%;
+      padding: 6px 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+      margin-top: 0;
+    }
+    .note-inline {
       font-size: 12px;
       color: gray;
       margin-top: 2px;
+      white-space: normal;
+      line-height: 1.2;
+      user-select: none;
     }
     .output {
       margin-top: 20px;
@@ -50,7 +50,14 @@
     .note {
       font-size: 12px;
       color: gray;
-      margin-top: 20px;
+      margin-top: 8px;
+      user-select: none;
+    }
+    .small-note {
+      font-size: 12px;
+      color: gray;
+      margin-top: 8px;
+      user-select: none;
       text-align: center;
     }
   </style>
@@ -58,58 +65,70 @@
 <body>
   <h2>复印纸加工自动计算</h2>
 
-  <div class="form-row">
-    <div class="form-label">吨价（元/吨）：</div>
-    <div class="form-input"><input type="number" id="tonPrice" value="4900"></div>
-  </div>
+  <label>
+    <span>吨价（元/吨）：</span>
+    <div><input type="number" id="tonPrice" value="4900" /></div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">实际克数（g）：</div>
-    <div class="form-input"><input type="number" id="weight" value="68"></div>
-  </div>
+  <label>
+    <span>实际克数（g）：</span>
+    <div><input type="number" id="weight" value="68" /></div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">实际张数：</div>
-    <div class="form-input"><input type="number" id="sheets" value="395"></div>
-  </div>
+  <label>
+    <span>实际张数：</span>
+    <div><input type="number" id="sheets" value="395" /></div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">包数：</div>
-    <div class="form-input">
+  <label>
+    <span>包数：</span>
+    <div>
       <select id="packs">
         <option value="5">5 包</option>
         <option value="8">8 包</option>
       </select>
     </div>
-  </div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">内包：</div>
-    <div class="form-input">
-      <input type="number" id="innerCost" value="0.22" step="0.01">
-      <div class="subnote">默认 0.22</div>
+  <label>
+    <span>内包：</span>
+    <div>
+      <input type="number" id="innerCost" value="0.22" step="0.01" />
+      <div class="note-inline">(默认0.22)</div>
     </div>
-  </div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">箱盖：</div>
-    <div class="form-input">
-      <input type="number" id="boxTop" value="0.65" step="0.01">
-      <div class="subnote">黄传韵 0.4</div>
+  <label>
+    <span>箱盖：</span>
+    <div>
+      <input type="number" id="boxTop" value="0.65" step="0.01" />
+      <div class="note-inline">(默认5包0.65，8包0.90)</div>
     </div>
-  </div>
+  </label>
 
-  <div class="form-row">
-    <div class="form-label">箱底：</div>
-    <div class="form-input">
-      <input type="number" id="boxBottom" value="1.15" step="0.01">
-      <div class="subnote">黄传韵 0.8 红淮星 0.95</div>
+  <label>
+    <span>箱底：</span>
+    <div>
+      <input type="number" id="boxBottom" value="1.15" step="0.01" />
+      <div class="note-inline">(默认5包1.15，8包1.75)</div>
     </div>
+  </label>
+
+  <div class="output">
+    成品单价（箱）含代工费：<span id="result">0.0000</span> 元
+  </div>
+  <div class="output">
+    成品单价（箱）含运费：<span id="resultWithShipping">0.0000</span> 元
   </div>
 
-  <div class="output">成品单价（箱）含代工费：<span id="result">0.0000</span> 元</div>
-  <div class="output">成品单价（箱）含运费：<span id="resultWithShipping">0.0000</span> 元</div>
-  <div class="note">加工费固定为 100 元。自动计算基于 Excel 提供公式。</div>
+  <div class="note" style="text-align:center;">
+    加工费固定为 100 元。自动计算基于 Excel 提供公式。
+  </div>
+
+  <div class="note" style="font-size:14px; color:gray; margin-top:20px; text-align:center;">
+    <div>吨成品数量：<span id="tonOutput">0.0000</span></div>
+    <div>单箱消耗：<span id="consumeOutput">0.0000</span></div>
+  </div>
 
   <script>
     function setDefaultPackagingCosts(packCount) {
@@ -129,7 +148,7 @@
       const B = 100;
       const D = parseFloat(document.getElementById('weight').value) || 0;
       const E = parseFloat(document.getElementById('sheets').value) || 0;
-      const F = parseFloat(document.getElementById('packs').value) || 0;
+      const F = parseInt(document.getElementById('packs').value) || 0;
       const G = parseFloat(document.getElementById('innerCost').value) || 0;
       const H = parseFloat(document.getElementById('boxTop').value) || 0;
       const I = parseFloat(document.getElementById('boxBottom').value) || 0;
@@ -144,8 +163,13 @@
         shipping = 0.4531;
       }
 
+      const tonOutput = D && E && F ? (15820000 / D / E / F) : 0;
+      const consumeOutput = tonOutput ? (1000 / tonOutput) : 0;
+
       document.getElementById('result').textContent = result.toFixed(4);
       document.getElementById('resultWithShipping').textContent = (result + shipping).toFixed(4);
+      document.getElementById('tonOutput').textContent = tonOutput.toFixed(4);
+      document.getElementById('consumeOutput').textContent = consumeOutput.toFixed(4);
     }
 
     document.querySelectorAll('input, select').forEach(el => {
@@ -158,7 +182,7 @@
       calculate();
     });
 
-    // 初始设置
+    // 初始化默认值和计算
     setDefaultPackagingCosts(5);
     calculate();
   </script>
