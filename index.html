@@ -8,7 +8,7 @@
     body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; }
     h2 { text-align: center; }
     label { display: block; margin-top: 10px; }
-    input { width: 100%; padding: 8px; margin-top: 5px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
     .output { margin-top: 20px; font-weight: bold; font-size: 18px; color: green; }
     .note { font-size: 12px; color: gray; margin-top: 20px; }
   </style>
@@ -18,14 +18,34 @@
   <label>吨价（元/吨）：<input type="number" id="tonPrice" value="4900"></label>
   <label>实际克数（g）：<input type="number" id="weight" value="68"></label>
   <label>实际张数：<input type="number" id="sheets" value="395"></label>
-  <label>包数：<input type="number" id="packs" value="5"></label>
+  
+  <label>包数：
+    <select id="packs">
+      <option value="5">5 包</option>
+      <option value="8">8 包</option>
+    </select>
+  </label>
+  
   <label>内包成本（默认0.22）：<input type="number" id="innerCost" value="0.22" step="0.01"></label>
-  <label>箱盖（默认0.65）：<input type="number" id="boxTop" value="0.65" step="0.01"></label>
-  <label>箱底（默认0.95）：<input type="number" id="boxBottom" value="0.95" step="0.01"></label>
+  <label>箱盖：<input type="number" id="boxTop" value="0.65" step="0.01"></label>
+  <label>箱底：<input type="number" id="boxBottom" value="1.15" step="0.01"></label>
+  
   <div class="output">成品单价（箱）含代工费：<span id="result">0.00</span> 元</div>
   <div class="note">加工费固定为 100 元。自动计算基于 Excel 提供公式。</div>
 
   <script>
+    function setDefaultPackagingCosts(packCount) {
+      const boxTopInput = document.getElementById('boxTop');
+      const boxBottomInput = document.getElementById('boxBottom');
+      if (packCount === 5) {
+        boxTopInput.value = "0.65";
+        boxBottomInput.value = "1.15";
+      } else if (packCount === 8) {
+        boxTopInput.value = "0.90";
+        boxBottomInput.value = "1.75";
+      }
+    }
+
     function calculate() {
       const A = parseFloat(document.getElementById('tonPrice').value) || 0;
       const B = 100;
@@ -39,9 +59,20 @@
       const result = base * D * E * F + G * F + H + I;
       document.getElementById('result').textContent = result.toFixed(4);
     }
-    document.querySelectorAll('input').forEach(input => {
-      input.addEventListener('input', calculate);
+
+    // 初始化绑定
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', calculate);
     });
+
+    document.getElementById('packs').addEventListener('change', (e) => {
+      const packCount = parseInt(e.target.value, 10);
+      setDefaultPackagingCosts(packCount);
+      calculate();
+    });
+
+    // 初始设置
+    setDefaultPackagingCosts(5);
     calculate();
   </script>
 </body>
