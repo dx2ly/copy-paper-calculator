@@ -5,24 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>复印纸加工自动计算</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; }
-    h2 { text-align: center; }
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
 
-    label {
+    h2 {
+      text-align: center;
+    }
+
+    .form-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
+      align-items: flex-start;
+      margin-top: 12px;
     }
 
-    label span {
-      flex: 1;
+    .form-label {
+      width: 48%;
+      text-align: right;
+      padding-right: 10px;
+      box-sizing: border-box;
     }
 
-    input, select {
-      width: 120px;
+    .form-input {
+      width: 48%;
+    }
+
+    .form-input input,
+    .form-input select {
+      width: 100%;
       padding: 6px;
-      margin-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .subnote {
+      font-size: 12px;
+      color: gray;
+      margin-top: 2px;
+      text-align: left;
     }
 
     .output {
@@ -42,18 +65,51 @@
 <body>
   <h2>复印纸加工自动计算</h2>
 
-  <label><span>吨价（元/吨）：</span><input type="number" id="tonPrice" value="4900"></label>
-  <label><span>实际克数（g）：</span><input type="number" id="weight" value="68"></label>
-  <label><span>实际张数：</span><input type="number" id="sheets" value="395"></label>
-  <label><span>包数：</span>
-    <select id="packs">
-      <option value="5">5 包</option>
-      <option value="8">8 包</option>
-    </select>
-  </label>
-  <label><span>内包成本（默认0.22）：</span><input type="number" id="innerCost" value="0.22" step="0.01"></label>
-  <label><span>箱盖（黄传韵0.4）：</span><input type="number" id="boxTop" value="0.65" step="0.01"></label>
-  <label><span>箱底（黄传韵0.8 红淮星0.95）：</span><input type="number" id="boxBottom" value="1.15" step="0.01"></label>
+  <div class="form-row">
+    <div class="form-label">吨价（元/吨）：</div>
+    <div class="form-input"><input type="number" id="tonPrice" value="4900"></div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">实际克数（g）：</div>
+    <div class="form-input"><input type="number" id="weight" value="68"></div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">实际张数：</div>
+    <div class="form-input"><input type="number" id="sheets" value="395"></div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">包数：</div>
+    <div class="form-input">
+      <select id="packs">
+        <option value="5">5 包</option>
+        <option value="8">8 包</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">内包成本（默认0.22）：</div>
+    <div class="form-input"><input type="number" id="innerCost" value="0.22" step="0.01"></div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">箱盖：</div>
+    <div class="form-input">
+      <input type="number" id="boxTop" value="0.65" step="0.01">
+      <div class="subnote">黄传韵 0.4</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label">箱底：</div>
+    <div class="form-input">
+      <input type="number" id="boxBottom" value="1.15" step="0.01">
+      <div class="subnote">黄传韵 0.8，红淮星 0.95</div>
+    </div>
+  </div>
 
   <div class="output">成品单价（箱）含代工费：<span id="result">0.00</span> 元</div>
   <div class="output">成品单价（箱）含运费：<span id="resultWithFreight">0.00</span> 元</div>
